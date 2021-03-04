@@ -642,30 +642,30 @@ offset 1
 fetch first 2 rows with ties;
 
 
-select first_name, last_name, row_number() over () rn
+select first_name, row_number() over () rn
 from t1
 order by rn
 offset 1
 fetch first 2 rows with ties;
 
-select first_name, last_name, row_number() over () rn
+select first_name, row_number() over () rn
 from t1
 order by rn desc
 offset 1
 fetch first 2 rows with ties;
 
-select first_name, last_name, score, rank() over (ORDER BY score)
+select first_name, score, rank() over (ORDER BY score)
 from t1
 order by rank() over (ORDER BY score)
 fetch first 3 rows with ties;
 
-select first_name, last_name, score, rank() over (ORDER BY score)
+select first_name, score, rank() over (ORDER BY score)
 from t1
 order by rank() over (ORDER BY score)
 offset 1
 fetch first 2 rows with ties;
 
-select first_name, last_name, score, rank() over (ORDER BY score)
+select first_name, score, rank() over (ORDER BY score)
 from t1
 order by rank() over (ORDER BY score)
 fetch first 6 rows with ties;
