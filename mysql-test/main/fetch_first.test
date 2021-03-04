@@ -672,18 +672,29 @@ fetch first 6 rows with ties;
 
 
 
-drop table t1;
+--echo #
+--echo # Test union-like operator with multiple fetch first clauses.
+--echo #
+select * from t1 order by 1 fetch first 3 rows with ties;
+select * from t1 order by first_name desc fetch first 3 rows with ties;
 
-# Test variables referenced.
-# Subqueries
-# Aggregation
-# views
-# derived tables
-# CTEs
-# recursive CTEs
-# window functions
-# multiple order by
-# In stored functions.
-# With indexes / without indexes
-# With sequences?
-# Replication
+(select * from t1 order by 1 fetch first 3 rows with ties)
+intersect
+(select * from t1 order by first_name desc fetch first 3 rows with ties)
+order by first_name
+fetch first 1 row with ties;
+
+(select * from t1 order by 1 fetch first 3 rows with ties)
+except
+(select * from t1 order by first_name desc fetch first 3 rows with ties)
+order by first_name
+fetch first 1 row with ties;
+
+(select * from t1 order by 1 fetch first 3 rows with ties)
+except
+(select * from t1 order by first_name desc fetch first 3 rows with ties)
+order by first_name
+offset 1
+fetch first 1 row with ties;
+
+drop table t1;
