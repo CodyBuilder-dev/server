@@ -671,6 +671,49 @@ order by rank() over (ORDER BY score)
 fetch first 6 rows with ties;
 
 
+--echo #
+--echo # Test nulls.
+--echo #
+create table t2 (id int, location varchar(100), time datetime, value int, fk int);
+
+insert into t2 values (1, 'home', '2020-01-01 10:00', 10, 1);
+insert into t2 values (2, 'home', '2020-01-01 11:00', 11, 2);
+insert into t2 values (3, 'home', '2020-01-01 12:00', 12, 3);
+insert into t2 values (4, 'home', '2020-01-01 13:00', 13, 3);
+insert into t2 values (5, 'home', '2020-01-01 14:00', 13, 3);
+insert into t2 values (6, 'home', '2020-01-01 15:00', 13, 2);
+insert into t2 values (7, 'home', '2020-01-01 16:00', 13, 6);
+insert into t2 values (8, 'outside', '2020-01-01 17:00', 17, 6);
+insert into t2 values (9, 'outside', '2020-01-01 18:00', 17, 6);
+insert into t2 values (10, 'outside', '2020-01-01 19:00', 17, 8);
+insert into t2 values (11, 'outside', '2020-01-01 20:00', 16, 7);
+insert into t2 values (12, 'outside', '2020-01-01 21:00', 16, 7);
+
+select *
+from t1 left join t2 on t1.id = t2.fk
+order by t2.location;
+
+select *
+from t1 left join t2 on t1.id = t2.fk
+order by t2.location
+fetch first 1 row with ties;
+
+select *
+from t1 left join t2 on t1.id = t2.fk
+order by t2.location
+fetch first 2 row with ties;
+
+select *
+from t1 left join t2 on t1.id = t2.fk
+order by t2.location
+fetch first 3 row with ties;
+
+select *
+from t1 left join t2 on t1.id = t2.fk
+order by t2.location
+offset 2
+fetch first 1 row with ties;
+
 
 --echo #
 --echo # Test union-like operator with multiple fetch first clauses.
@@ -698,3 +741,4 @@ offset 1
 fetch first 1 row with ties;
 
 drop table t1;
+drop table t2;
